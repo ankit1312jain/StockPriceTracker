@@ -76,6 +76,18 @@ logic, sorting rules, the price generator (determinism + bounds), JSON
 codec (round-trip + lenient decoding), the store's event application and feed
 control, and the list view model's sorting/toggle behaviour.
 
+## Continuous Integration
+
+A GitHub Actions workflow (`.github/workflows/ci.yml`) builds the app and runs
+the full unit-test suite on every push and pull request to `main`
+(`xcodebuild test` against the shared `StockPriceTracker` scheme). Tests are
+hermetic — they use in-memory fakes and a seeded RNG, so there is no network
+dependency and runs are deterministic.
+
+> The runner image must provide the Xcode / iOS SDK this project targets
+> (Xcode 26 / iOS 26). Adjust the `runs-on` image and the `-destination`
+> simulator in the workflow to match the versions available on your runner.
+
 ## Project setup notes
 
 The Swift 6 language mode and the unit-test target are configured in the Xcode
