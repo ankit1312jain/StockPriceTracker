@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceFormatter -
+// MARK:  -  PriceFormatter  -
 
 /// Centralised, locale-aware formatting so both screens render prices
 /// identically and correctly for the user's region (the "multi-regional"

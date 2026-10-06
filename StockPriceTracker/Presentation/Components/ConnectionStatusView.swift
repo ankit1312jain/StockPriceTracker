@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - ConnectionStatusView -
+// MARK:  -  ConnectionStatusView  -
 
 /// A small dot-plus-label indicator reflecting the live feed connection state.
 struct ConnectionStatusView: View {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Decimal Rounding -
+// MARK:  -  Decimal Rounding  -
 
 extension Decimal {
     /// Returns the value rounded to `scale` fractional digits.

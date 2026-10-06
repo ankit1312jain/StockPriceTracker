@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - SymbolsListViewModelTests -
+// MARK:  -  SymbolsListViewModelTests  -
 
 @MainActor
 struct SymbolsListViewModelTests {
@@ -50,7 +50,7 @@ struct SymbolsListViewModelTests {
         #expect(feed.stopCallCount == 1)
     }
 
-    // MARK: - Helpers -
+    // MARK:  -  Helpers  -
 
     private func loadedStore(_ stocks: [Stock]) async -> PriceStore {
         let store = PriceStore(catalog: MockSymbolCatalog(stocks: stocks), feed: MockPriceFeed())

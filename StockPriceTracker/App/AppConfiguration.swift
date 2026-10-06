@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - AppConfiguration -
+// MARK:  -  AppConfiguration  -
 
 /// Launch-time configuration. Keeping the feed endpoint and currency here
 /// (rather than hard-coded in the networking layer) is what lets a build target

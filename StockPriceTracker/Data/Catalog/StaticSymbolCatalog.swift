@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - StaticSymbolCatalog -
+// MARK:  -  StaticSymbolCatalog  -
 
 /// Provides the fixed set of 25 symbols (with seed prices and descriptions)
 /// that the app tracks.
@@ -37,7 +37,7 @@ struct StaticSymbolCatalog: SymbolCatalogProviding {
         }
     }
 
-    // MARK: - Seed Data -
+    // MARK:  -  Seed Data  -
 
     private struct Entry {
         let symbol: String

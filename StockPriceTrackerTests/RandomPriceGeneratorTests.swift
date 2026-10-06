@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - RandomPriceGeneratorTests -
+// MARK:  -  RandomPriceGeneratorTests  -
 
 struct RandomPriceGeneratorTests {
 

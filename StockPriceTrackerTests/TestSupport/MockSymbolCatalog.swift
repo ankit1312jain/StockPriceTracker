@@ -8,7 +8,7 @@
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - MockSymbolCatalog -
+// MARK:  -  MockSymbolCatalog  -
 
 struct MockSymbolCatalog: SymbolCatalogProviding {
     let stocks: [Stock]

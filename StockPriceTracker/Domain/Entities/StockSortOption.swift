@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - StockSortOption -
+// MARK:  -  StockSortOption  -
 
 /// The two sort orders required by the symbols list screen.
 nonisolated enum StockSortOption: String, CaseIterable, Identifiable, Sendable {

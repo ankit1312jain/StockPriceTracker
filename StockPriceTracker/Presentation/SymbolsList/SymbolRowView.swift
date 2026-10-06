@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - SymbolRowView -
+// MARK:  -  SymbolRowView  -
 
 /// One row of the symbols list showing the symbol, company name, current price
 /// and the shared price-change badge.
