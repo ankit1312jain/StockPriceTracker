@@ -28,6 +28,7 @@ struct SymbolsListView: View {
                 }
             }
             .navigationTitle("Stocks")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: String.self) { symbol in
                 SymbolDetailView(symbol: symbol)
             }
