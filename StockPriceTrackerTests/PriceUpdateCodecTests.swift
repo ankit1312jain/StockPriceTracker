@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - PriceUpdateCodecTests -
+// MARK:  -  PriceUpdateCodecTests  -
 
 struct PriceUpdateCodecTests {
 

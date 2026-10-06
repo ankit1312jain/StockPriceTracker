@@ -8,7 +8,7 @@
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - MockPriceFeed -
+// MARK:  -  MockPriceFeed  -
 
 /// A controllable ``PriceFeedProviding`` double. Tests push events via `emit`
 /// and inspect how `start`/`stop` were called. Thread-safe via a lock because
@@ -27,13 +27,13 @@ final class MockPriceFeed: PriceFeedProviding, @unchecked Sendable {
         (events, continuation) = AsyncStream.makeStream(of: FeedEvent.self)
     }
 
-    // MARK: - Inspection -
+    // MARK:  -  Inspection  -
 
     var startCallCount: Int { lock.withLock { _startCallCount } }
     var stopCallCount: Int { lock.withLock { _stopCallCount } }
     var startedSymbols: [Stock] { lock.withLock { _startedSymbols } }
 
-    // MARK: - PriceFeedProviding -
+    // MARK:  -  PriceFeedProviding  -
 
     func start(symbols: [Stock]) async {
         lock.withLock {
@@ -46,7 +46,7 @@ final class MockPriceFeed: PriceFeedProviding, @unchecked Sendable {
         lock.withLock { _stopCallCount += 1 }
     }
 
-    // MARK: - Driving Events -
+    // MARK:  -  Driving Events  -
 
     func emit(_ event: FeedEvent) { continuation.yield(event) }
     func finish() { continuation.finish() }

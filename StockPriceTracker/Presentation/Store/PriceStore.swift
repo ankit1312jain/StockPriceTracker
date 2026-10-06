@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-// MARK: - PriceStore -
+// MARK:  -  PriceStore  -
 
 /// The single, observable source of truth for the app's live price data.
 ///
@@ -52,7 +52,7 @@ final class PriceStore {
         self.feed = feed
     }
 
-    // MARK: - Derived Access -
+    // MARK:  -  Derived Access  -
 
     /// All stocks in catalog order.
     var stocks: [Stock] {
@@ -64,7 +64,7 @@ final class PriceStore {
         stocksBySymbol[symbol]
     }
 
-    // MARK: - Lifecycle -
+    // MARK:  -  Lifecycle  -
 
     /// Loads the catalog and begins observing feed events. Safe to call once;
     /// intended to be driven from the root view's `.task`.
@@ -95,7 +95,7 @@ final class PriceStore {
         }
     }
 
-    // MARK: - Feed Control -
+    // MARK:  -  Feed Control  -
 
     /// Starts the price feed (connects and begins streaming updates).
     func startFeed() {
@@ -111,7 +111,7 @@ final class PriceStore {
         Task { await feed.stop() }
     }
 
-    // MARK: - Scene Lifecycle -
+    // MARK:  -  Scene Lifecycle  -
 
     /// Suspends the live transport when the app leaves the foreground, without
     /// clearing the user's run intent. Called for `scenePhase == .background`;
@@ -139,7 +139,7 @@ final class PriceStore {
         isFeedRunning ? stopFeed() : startFeed()
     }
 
-    // MARK: - Event Application -
+    // MARK:  -  Event Application  -
 
     /// Exposed at `internal` access for deterministic unit testing.
     func apply(_ event: FeedEvent) {

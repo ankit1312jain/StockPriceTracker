@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - PriceChangeBadge -
+// MARK:  -  PriceChangeBadge  -
 
 /// The price-change indicator shown on both the list and detail screens, so the
 /// indicator is guaranteed to look and behave identically in both places.

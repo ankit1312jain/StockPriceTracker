@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - SortStocksUseCase -
+// MARK:  -  SortStocksUseCase  -
 
 /// Encapsulates the ordering rules for the symbols list.
 ///

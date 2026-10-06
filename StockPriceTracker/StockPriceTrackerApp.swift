@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - StockPriceTrackerApp -
+// MARK:  -  StockPriceTrackerApp  -
 
 @main
 struct StockPriceTrackerApp: App {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceUpdateCodec -
+// MARK:  -  PriceUpdateCodec  -
 
 /// Encodes a ``PriceUpdate`` into the JSON string we send over the WebSocket,
 /// and decodes the echoed string back into a ``PriceUpdate``.
@@ -20,7 +20,7 @@ import Foundation
 /// are created per call), which keeps it trivially `Sendable`.
 nonisolated struct PriceUpdateCodec: Sendable {
 
-    // MARK: - DTO -
+    // MARK:  -  DTO  -
 
     private struct PriceUpdateDTO: Codable {
         let symbol: String
@@ -28,7 +28,7 @@ nonisolated struct PriceUpdateCodec: Sendable {
         let timestamp: TimeInterval
     }
 
-    // MARK: - Encoding -
+    // MARK:  -  Encoding  -
 
     func encode(_ update: PriceUpdate) throws -> String {
         let dto = PriceUpdateDTO(
@@ -40,7 +40,7 @@ nonisolated struct PriceUpdateCodec: Sendable {
         return String(decoding: data, as: UTF8.self)
     }
 
-    // MARK: - Decoding -
+    // MARK:  -  Decoding  -
 
     func decode(_ text: String) -> PriceUpdate? {
         guard let data = text.data(using: .utf8),

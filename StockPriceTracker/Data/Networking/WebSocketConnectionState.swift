@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - WebSocketConnectionState -
+// MARK:  -  WebSocketConnectionState  -
 
 /// The real connection state of the underlying WebSocket transport.
 ///

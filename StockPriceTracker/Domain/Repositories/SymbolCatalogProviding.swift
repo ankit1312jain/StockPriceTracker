@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - SymbolCatalogProviding -
+// MARK:  -  SymbolCatalogProviding  -
 
 /// Supplies the set of symbols the app tracks, along with seed metadata
 /// (name, description, initial price, currency).

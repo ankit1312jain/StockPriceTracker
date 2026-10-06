@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - PriceStoreTests -
+// MARK:  -  PriceStoreTests  -
 
 @MainActor
 struct PriceStoreTests {
@@ -84,7 +84,7 @@ struct PriceStoreTests {
         feed.finish()
     }
 
-    // MARK: - Helpers -
+    // MARK:  -  Helpers  -
 
     private func makeStore() -> PriceStore {
         PriceStore(catalog: MockSymbolCatalog(stocks: [f("A", 100), f("B", 200)]), feed: MockPriceFeed())

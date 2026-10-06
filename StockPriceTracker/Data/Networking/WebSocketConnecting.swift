@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - WebSocketConnecting -
+// MARK:  -  WebSocketConnecting  -
 
 /// A minimal, transport-level abstraction over a text WebSocket.
 ///

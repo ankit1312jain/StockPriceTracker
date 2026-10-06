@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - RandomPriceGenerator -
+// MARK:  -  RandomPriceGenerator  -
 
 /// Generates the next price for a symbol as a small, bounded random walk from a
 /// base value.

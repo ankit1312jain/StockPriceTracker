@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceFeedProviding -
+// MARK:  -  PriceFeedProviding  -
 
 /// Abstraction over the real-time price feed.
 ///

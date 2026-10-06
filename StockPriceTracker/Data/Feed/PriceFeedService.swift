@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceFeedService -
+// MARK:  -  PriceFeedService  -
 
 /// Drives the live price feed over a ``WebSocketConnecting`` transport.
 ///
@@ -52,7 +52,7 @@ actor PriceFeedService: PriceFeedProviding {
         (events, continuation) = AsyncStream.makeStream(bufferingPolicy: .bufferingNewest(1024))
     }
 
-    // MARK: - PriceFeedProviding -
+    // MARK:  -  PriceFeedProviding  -
 
     func start(symbols: [Stock]) {
         guard !isRunning else { return }
@@ -82,7 +82,7 @@ actor PriceFeedService: PriceFeedProviding {
         continuation.yield(.statusChanged(.disconnected))
     }
 
-    // MARK: - Connection Supervision -
+    // MARK:  -  Connection Supervision  -
 
     /// Connects and runs the session, reconnecting with exponential backoff if
     /// the connection drops while the feed is still meant to be running.
@@ -143,7 +143,7 @@ actor PriceFeedService: PriceFeedProviding {
         }
     }
 
-    // MARK: - Producer -
+    // MARK:  -  Producer  -
 
     private func produceLoop() async {
         while isRunning && !Task.isCancelled {
@@ -167,7 +167,7 @@ actor PriceFeedService: PriceFeedProviding {
         }
     }
 
-    // MARK: - Receiver -
+    // MARK:  -  Receiver  -
 
     private func receiveLoop() async {
         while isRunning && !Task.isCancelled {
