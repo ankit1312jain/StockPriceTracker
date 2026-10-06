@@ -30,8 +30,7 @@ struct PriceChangeBadge: View {
             Image(systemName: direction.sfSymbol)
                 .imageScale(.small)
             Text(text)
-                .monospacedDigit()
-                .contentTransition(.numericText())
+                .animatedNumericText()
         }
         .font(style == .detailed ? .headline : .subheadline)
         .fontWeight(.semibold)
