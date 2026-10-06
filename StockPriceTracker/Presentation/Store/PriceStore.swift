@@ -34,7 +34,15 @@ final class PriceStore {
     private(set) var isLoaded = false
 
     /// Whether the user has the feed switched on (drives the Start/Stop button).
+    ///
+    /// This is the user's *intent* and deliberately survives backgrounding: the
+    /// transport is suspended while backgrounded, but this flag is untouched so
+    /// the feed resumes automatically on return to the foreground.
     private(set) var isFeedRunning = false
+
+    /// Whether the scene is currently in the foreground. The live transport is
+    /// only kept open while both this and `isFeedRunning` are `true`.
+    private var isSceneActive = true
 
     private let catalog: SymbolCatalogProviding
     private let feed: PriceFeedProviding
@@ -93,8 +101,7 @@ final class PriceStore {
     func startFeed() {
         guard !isFeedRunning else { return }
         isFeedRunning = true
-        let seed = stocks
-        Task { await feed.start(symbols: seed) }
+        if isSceneActive { launchFeed() }
     }
 
     /// Stops the price feed and disconnects.
@@ -102,6 +109,29 @@ final class PriceStore {
         guard isFeedRunning else { return }
         isFeedRunning = false
         Task { await feed.stop() }
+    }
+
+    // MARK: - Scene Lifecycle -
+
+    /// Suspends the live transport when the app leaves the foreground, without
+    /// clearing the user's run intent. Called for `scenePhase == .background`;
+    /// `.inactive` is intentionally ignored (transient interruptions).
+    func enterBackground() {
+        isSceneActive = false
+        if isFeedRunning { Task { await feed.stop() } }
+    }
+
+    /// Resumes the live transport when the app returns to the foreground, but
+    /// only if the user still has the feed switched on.
+    func enterForeground() {
+        isSceneActive = true
+        if isFeedRunning { launchFeed() }
+    }
+
+    /// Seeds the feed with the current prices and starts it.
+    private func launchFeed() {
+        let seed = stocks
+        Task { await feed.start(symbols: seed) }
     }
 
     /// Toggles the feed; wired to the Start/Stop button.
