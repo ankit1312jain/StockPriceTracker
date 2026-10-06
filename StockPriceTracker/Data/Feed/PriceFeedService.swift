@@ -146,6 +146,7 @@ actor PriceFeedService: PriceFeedProviding {
     // MARK:  -  Producer  -
 
     private func produceLoop() async {
+        var rng = SystemRandomNumberGenerator()
         while isRunning && !Task.isCancelled {
             let interval = Double.random(in: tickInterval)
             try? await Task.sleep(for: .seconds(interval))
@@ -154,7 +155,6 @@ actor PriceFeedService: PriceFeedProviding {
             guard let symbol = symbols.randomElement(),
                   let base = basePrices[symbol] else { continue }
 
-            var rng = SystemRandomNumberGenerator()
             let newPrice = generator.nextPrice(base: base, using: &rng)
             basePrices[symbol] = newPrice
 

@@ -56,8 +56,7 @@ struct SymbolDetailView: View {
                 .foregroundStyle(.secondary)
             Text(PriceFormatter.price(stock.price, currencyCode: stock.currencyCode))
                 .font(.system(size: 44, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .contentTransition(.numericText())
+                .animatedNumericText()
             PriceChangeBadge(stock: stock, style: .detailed)
         }
     }

@@ -31,8 +31,7 @@ struct SymbolRowView: View {
             VStack(alignment: .trailing, spacing: 2) {
                 Text(PriceFormatter.price(stock.price, currencyCode: stock.currencyCode))
                     .font(.body.weight(.semibold))
-                    .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .animatedNumericText()
                 PriceChangeBadge(stock: stock, style: .compact)
             }
         }
