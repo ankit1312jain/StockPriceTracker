@@ -21,6 +21,20 @@ unit suite.
   real connection state driven by the WebSocket delegate, and scene-aware
   pause/resume on backgrounding. Accessible indicators (glyph + colour).
 
+## Tech Stack
+
+| Area | Technology |
+|---|---|
+| Language | Swift 6 (strict concurrency) |
+| UI | SwiftUI |
+| State | Observation — `@Observable`, `@Environment` |
+| Concurrency | Swift `actor`, `AsyncStream`, structured concurrency (no Combine) |
+| Networking | `URLSessionWebSocketTask` + `URLSessionWebSocketDelegate` |
+| Formatting | `FormatStyle` (locale-aware currency/percent) |
+| Navigation | `NavigationStack` + value-based `navigationDestination` |
+| Testing | Swift Testing, in-memory fakes, seeded RNG |
+| CI | GitHub Actions (`macos-26`, Xcode 26) |
+
 ## Architecture
 
 Clean Architecture + MVVM. The dependency rule points inward:
@@ -36,6 +50,34 @@ StockPriceTracker/
   Presentation/   PriceStore (@Observable), view models, SwiftUI views, components
   Core/           Small cross-cutting helpers
 StockPriceTrackerTests/   Swift Testing suite + test doubles
+```
+
+### WebSocket data flow
+
+The app is **both producer and consumer**: it fabricates a random tick, sends it
+to the echo endpoint, and renders the echoed message — so the "real-time" feed
+is simulated client-side (exactly what the assessment's echo integration asks
+for).
+
+```
+RandomPriceGenerator ──price──▶ PriceUpdate ──encode──▶ PriceUpdateCodec (JSON)
+                                                              │ send()
+                                                              ▼
+                                        URLSessionWebSocketClient (actor)
+                                                              │
+                                   wss://ws.postman-echo.com/raw  (echo server)
+                                                              │ receive()
+                                                              ▼
+                                        URLSessionWebSocketClient (actor)
+                                                              │ decode()
+                                                              ▼
+                         PriceFeedService (actor) ──FeedEvent──▶ AsyncStream
+                                                              │
+                                                              ▼
+                              PriceStore (@MainActor, @Observable)
+                                                              │
+                                                              ▼
+                     SymbolsListView   &   SymbolDetailView   (update live)
 ```
 
 ### Real-time updates across screens
@@ -105,6 +147,30 @@ To stay aligned with the project's toolchain, the workflow:
   **iOS 26.5 SDK** this app targets is available;
 - picks an available iPhone simulator **by UDID at runtime** instead of pinning
   a device name, so the destination survives Xcode / runner-image updates.
+
+## Design decisions & possible improvements
+
+Deliberate trade-offs:
+
+- **Client-simulated feed.** The echo endpoint reflects whatever is sent, so the
+  app generates ticks locally and consumes the echo. This matches the brief and
+  keeps the feed fully testable.
+- **`Decimal`, not `Double`, for money.** Prices/changes use `Decimal` with
+  `NSDecimalRound` to avoid floating-point drift in currency values.
+- **3-case `ConnectionStatus`.** Transport failures map to `.disconnected` — the
+  backoff supervisor retries regardless, so a separate `failed` case would add
+  UI/test surface without product value.
+- **No ping/keep-alive.** The producer sends a frame every <1s, so a dead socket
+  surfaces almost immediately; a heartbeat would be redundant here.
+
+Possible future enhancements:
+
+- Persisted, user-selectable watchlist.
+- Historical price charts on the detail screen.
+- A remote, region-specific symbol catalog (the `SymbolCatalogProviding` port
+  already allows swapping the static catalog with zero changes upstream).
+- Search/filter and pull-to-refresh on the list.
+- Snapshot / UI tests for the two screens.
 
 ## Project setup notes
 
