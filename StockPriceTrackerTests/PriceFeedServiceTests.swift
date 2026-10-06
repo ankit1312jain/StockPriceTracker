@@ -11,6 +11,7 @@ import Foundation
 
 // MARK:  -  PriceFeedServiceTests  -
 
+@MainActor
 struct PriceFeedServiceTests {
 
     @Test func connectsAndStreamsEchoedPriceUpdates() async {
@@ -25,7 +26,11 @@ struct PriceFeedServiceTests {
 
         await feed.start(symbols: [StockFixtures.stock("AAPL", price: 100)])
 
-        await poll { await recorder.sawConnected && await recorder.sawUpdate(for: "AAPL") }
+        await poll {
+            let connected = await recorder.sawConnected
+            let update = await recorder.sawUpdate(for: "AAPL")
+            return connected && update
+        }
 
         #expect(await recorder.sawConnected)
         #expect(await recorder.sawUpdate(for: "AAPL"))

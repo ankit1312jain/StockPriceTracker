@@ -117,16 +117,10 @@ actor PriceFeedService: PriceFeedProviding {
                 status = .connecting
             case .connected:
                 status = .connected
-            case .disconnected(let code, let reason):
+            case .disconnected:
                 status = .disconnected
-                #if DEBUG
-                print("[PriceFeed] socket closed: code=\(code.rawValue) reason=\(reason ?? "nil")")
-                #endif
-            case .failed(let message):
+            case .failed:
                 status = .disconnected
-                #if DEBUG
-                print("[PriceFeed] socket failed: \(message)")
-                #endif
             }
             continuation.yield(.statusChanged(status))
         }

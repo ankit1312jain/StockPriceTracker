@@ -19,8 +19,9 @@ struct AppConfiguration: Sendable {
 
     /// Default configuration pointing at the assessment's echo endpoint.
     static let `default` = AppConfiguration(
-        // Compile-time constant, known-valid literal.
-        feedURL: URL(string: "wss://ws.postman-echo.com/raw")!,
+        // Known-valid literal; the fallback keeps this free of force-unwrapping
+        // and never triggers for this constant.
+        feedURL: URL(string: "wss://ws.postman-echo.com/raw") ?? URL(filePath: ""),
         currencyCode: "USD"
     )
 }
