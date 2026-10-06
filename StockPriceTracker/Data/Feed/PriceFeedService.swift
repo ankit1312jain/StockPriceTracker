@@ -34,6 +34,7 @@ actor PriceFeedService: PriceFeedProviding {
     private var basePrices: [String: Decimal] = [:]
     private var symbols: [String] = []
     private var supervisor: Task<Void, Never>?
+    private var statusTask: Task<Void, Never>?
     private var isRunning = false
 
     init(
@@ -58,6 +59,16 @@ actor PriceFeedService: PriceFeedProviding {
         isRunning = true
         self.symbols = symbols.map(\.symbol)
         self.basePrices = Dictionary(uniqueKeysWithValues: symbols.map { ($0.symbol, $0.price) })
+
+        // Observe the real transport state for the lifetime of the service.
+        // The client's stream has a single consumer, so it is created once and
+        // left running across start/stop cycles.
+        if statusTask == nil {
+            statusTask = Task { [weak self] in
+                await self?.observeConnectionState()
+            }
+        }
+
         supervisor = Task { [weak self] in
             await self?.runSupervised()
         }
@@ -78,9 +89,9 @@ actor PriceFeedService: PriceFeedProviding {
     private func runSupervised() async {
         var attempt = 0
         while isRunning && !Task.isCancelled {
-            continuation.yield(.statusChanged(.connecting))
+            // Status (connecting/connected/disconnected/failed) is now reported
+            // by the transport delegate via `observeConnectionState()`.
             await client.connect()
-            continuation.yield(.statusChanged(.connected))
             attempt = 0
 
             await runSession()
@@ -88,11 +99,36 @@ actor PriceFeedService: PriceFeedProviding {
 
             guard isRunning && !Task.isCancelled else { break }
 
-            // Unexpected drop: report disconnected and back off before retrying.
-            continuation.yield(.statusChanged(.disconnected))
+            // Unexpected drop: back off before retrying.
             attempt += 1
             let delay = min(pow(2.0, Double(attempt)) * 0.5, maxReconnectDelay)
             try? await Task.sleep(for: .seconds(delay))
+        }
+    }
+
+    /// Maps real transport state transitions from the client's delegate onto
+    /// domain ``ConnectionStatus`` feed events. Closes and failures both surface
+    /// as `.disconnected`; the close code / failure reason is kept for logging.
+    private func observeConnectionState() async {
+        for await state in client.connectionState {
+            let status: ConnectionStatus
+            switch state {
+            case .connecting:
+                status = .connecting
+            case .connected:
+                status = .connected
+            case .disconnected(let code, let reason):
+                status = .disconnected
+                #if DEBUG
+                print("[PriceFeed] socket closed: code=\(code.rawValue) reason=\(reason ?? "nil")")
+                #endif
+            case .failed(let message):
+                status = .disconnected
+                #if DEBUG
+                print("[PriceFeed] socket failed: \(message)")
+                #endif
+            }
+            continuation.yield(.statusChanged(status))
         }
     }
 

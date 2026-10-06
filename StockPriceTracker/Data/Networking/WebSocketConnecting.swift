@@ -15,6 +15,10 @@ import Foundation
 /// in-memory fake in tests, with zero real networking. The concrete type is
 /// ``URLSessionWebSocketClient``.
 protocol WebSocketConnecting: Sendable {
+    /// A long-lived stream of real transport state transitions, driven by the
+    /// WebSocket delegate callbacks (open / close / failure).
+    nonisolated var connectionState: AsyncStream<WebSocketConnectionState> { get }
+
     /// Establishes the connection (resumes the underlying task).
     func connect() async
 
