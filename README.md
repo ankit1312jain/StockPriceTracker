@@ -5,10 +5,6 @@ WebSocket echo server and drills into a per-symbol detail screen. Built with
 **Clean Architecture**, **Swift 6 strict concurrency**, and a **Swift Testing**
 unit suite.
 
-> Assessment note: the brief specified a mandatory `// MARK: - Name - ` comment
-> format (leading `- ` and trailing ` - `). That exact convention is used
-> throughout, in preference to the idiomatic `// MARK: - Name`.
-
 ## Features
 
 - Live prices for 25 symbols over `wss://ws.postman-echo.com/raw` — the app
@@ -21,7 +17,9 @@ unit suite.
   description — updating in real time, in lock-step with the list.
 - Locale-aware currency/percent formatting and localization-ready strings
   (the "multi-regional" requirement).
-- Auto-reconnect with exponential backoff; accessible indicators (glyph + colour).
+- Resilient connection lifecycle: auto-reconnect with exponential backoff,
+  real connection state driven by the WebSocket delegate, and scene-aware
+  pause/resume on backgrounding. Accessible indicators (glyph + colour).
 
 ## Architecture
 
@@ -32,7 +30,8 @@ Clean Architecture + MVVM. The dependency rule points inward:
 StockPriceTracker/
   App/            AppConfiguration, AppContainer (DI), StockPriceTrackerApp
   Domain/         Entities, Repository protocols (ports), SortStocksUseCase
-  Data/           URLSessionWebSocketClient (actor), PriceFeedService (actor),
+  Data/           URLSessionWebSocketClient (actor) + WebSocketConnecting port,
+                  WebSocketConnectionState, PriceFeedService (actor),
                   RandomPriceGenerator, PriceUpdateCodec, StaticSymbolCatalog
   Presentation/   PriceStore (@Observable), view models, SwiftUI views, components
   Core/           Small cross-cutting helpers
@@ -52,6 +51,22 @@ it, so a single applied tick re-renders every screen — no duplicated state.
 - UI state (`PriceStore`, view models) is `@MainActor`.
 - The feed exposes one `AsyncStream<FeedEvent>` (status + ticks) that the store
   consumes. Structured concurrency only — no Combine.
+
+### Connection lifecycle & resilience
+
+- **Real connection state.** `URLSessionWebSocketClient` adopts
+  `URLSessionWebSocketDelegate` and publishes a `WebSocketConnectionState`
+  stream from the actual `didOpen` / `didClose` / `didCompleteWithError`
+  callbacks. Status reflects the real handshake rather than being assumed the
+  moment the task resumes; `PriceFeedService` maps it onto the domain
+  `ConnectionStatus`.
+- **Auto-reconnect.** A supervising task reconnects with exponential backoff
+  (capped) whenever the transport drops while the feed is meant to be running.
+- **Scene-aware pause/resume.** The app observes `@Environment(\.scenePhase)`:
+  it suspends the socket on `.background` and resumes it on `.active`, while
+  **ignoring `.inactive`** so transient interruptions (Control Center, the app
+  switcher, an incoming call) don't drop the feed. The user's Start/Stop intent
+  is preserved across backgrounding, so the feed only resumes if it was on.
 
 ### Testability
 
@@ -84,9 +99,12 @@ the full unit-test suite on every push and pull request to `main`
 hermetic — they use in-memory fakes and a seeded RNG, so there is no network
 dependency and runs are deterministic.
 
-> The runner image must provide the Xcode / iOS SDK this project targets
-> (Xcode 26 / iOS 26). Adjust the `runs-on` image and the `-destination`
-> simulator in the workflow to match the versions available on your runner.
+To stay aligned with the project's toolchain, the workflow:
+
+- runs on the `macos-26` image and selects the newest installed Xcode, so the
+  **iOS 26.5 SDK** this app targets is available;
+- picks an available iPhone simulator **by UDID at runtime** instead of pinning
+  a device name, so the destination survives Xcode / runner-image updates.
 
 ## Project setup notes
 
