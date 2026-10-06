@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - SymbolDetailView -
+// MARK:  -  SymbolDetailView  -
 
 /// Shows the selected symbol's title, live price (with the *same* change badge
 /// used in the list) and a description.
@@ -35,7 +35,7 @@ struct SymbolDetailView: View {
         .navigationTitle(symbol)
     }
 
-    // MARK: - Content -
+    // MARK:  -  Content  -
 
     private func content(for stock: Stock) -> some View {
         ScrollView {
@@ -56,8 +56,7 @@ struct SymbolDetailView: View {
                 .foregroundStyle(.secondary)
             Text(PriceFormatter.price(stock.price, currencyCode: stock.currencyCode))
                 .font(.system(size: 44, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .contentTransition(.numericText())
+                .animatedNumericText()
             PriceChangeBadge(stock: stock, style: .detailed)
         }
     }

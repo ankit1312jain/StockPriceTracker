@@ -8,7 +8,7 @@
 import Foundation
 @testable import StockPriceTracker
 
-// MARK: - Stock Fixtures -
+// MARK:  -  Stock Fixtures  -
 
 enum StockFixtures {
     static func stock(
@@ -28,7 +28,7 @@ enum StockFixtures {
     }
 }
 
-// MARK: - Async Polling -
+// MARK:  -  Async Polling  -
 
 /// Awaits until `condition` becomes true or `timeout` elapses. Used to assert on
 /// state updated by detached tasks without arbitrary fixed sleeps.

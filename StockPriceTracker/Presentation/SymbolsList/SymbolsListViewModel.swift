@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-// MARK: - SymbolsListViewModel -
+// MARK:  -  SymbolsListViewModel  -
 
 /// Drives the symbols list screen: owns the selected sort option and exposes a
 /// sorted, display-ready list derived from the shared ``PriceStore``.
@@ -29,7 +29,7 @@ final class SymbolsListViewModel {
         self.store = store
     }
 
-    // MARK: - Derived State -
+    // MARK:  -  Derived State  -
 
     var sortedStocks: [Stock] {
         sortStocks(store.stocks, by: sortOption)
@@ -39,7 +39,7 @@ final class SymbolsListViewModel {
     var isFeedRunning: Bool { store.isFeedRunning }
     var isLoaded: Bool { store.isLoaded }
 
-    // MARK: - Intents -
+    // MARK:  -  Intents  -
 
     func toggleFeed() {
         store.toggleFeed()

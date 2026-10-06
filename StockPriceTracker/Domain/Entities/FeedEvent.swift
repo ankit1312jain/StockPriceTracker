@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - FeedEvent -
+// MARK:  -  FeedEvent  -
 
 /// A time-ordered event produced by a ``PriceFeedProviding`` implementation.
 ///

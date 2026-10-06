@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceUpdate -
+// MARK:  -  PriceUpdate  -
 
 /// An individual price tick received from the feed for a given symbol.
 ///

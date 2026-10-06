@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - PriceChangeDirection UI -
+// MARK:  -  PriceChangeDirection UI  -
 
 extension PriceChangeDirection {
 

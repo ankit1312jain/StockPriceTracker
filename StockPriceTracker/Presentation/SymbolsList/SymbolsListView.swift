@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-// MARK: - SymbolsListView -
+// MARK:  -  SymbolsListView  -
 
 struct SymbolsListView: View {
 
@@ -37,7 +37,7 @@ struct SymbolsListView: View {
         }
     }
 
-    // MARK: - List -
+    // MARK:  -  List  -
 
     private var symbolsList: some View {
         List(viewModel.sortedStocks) { stock in
@@ -49,7 +49,7 @@ struct SymbolsListView: View {
         .animation(.default, value: viewModel.sortOption)
     }
 
-    // MARK: - Header (status + sort) -
+    // MARK:  -  Header (status + sort)  -
 
     private var header: some View {
         VStack(spacing: 10) {
@@ -69,7 +69,7 @@ struct SymbolsListView: View {
         .background(.bar)
     }
 
-    // MARK: - Toolbar -
+    // MARK:  -  Toolbar  -
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {

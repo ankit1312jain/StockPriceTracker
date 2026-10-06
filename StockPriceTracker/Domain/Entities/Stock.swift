@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Stock -
+// MARK:  -  Stock  -
 
 /// A single tradable symbol together with its most recent price information.
 ///
@@ -37,7 +37,7 @@ nonisolated struct Stock: Identifiable, Sendable, Equatable {
 
     var id: String { symbol }
 
-    // MARK: - Derived Price Change -
+    // MARK:  -  Derived Price Change  -
 
     /// Absolute change between the previous and current price.
     var change: Decimal {
@@ -61,7 +61,7 @@ nonisolated struct Stock: Identifiable, Sendable, Equatable {
     }
 }
 
-// MARK: - Mutation Helpers -
+// MARK:  -  Mutation Helpers  -
 
 extension Stock {
     /// Returns a copy with `price` advanced to `newPrice`, preserving the old

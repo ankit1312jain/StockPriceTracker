@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - PriceChangeDirection -
+// MARK:  -  PriceChangeDirection  -
 
 /// The direction a price moved between two consecutive updates.
 ///

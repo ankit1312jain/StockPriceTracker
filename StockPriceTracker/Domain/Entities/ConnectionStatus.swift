@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - ConnectionStatus -
+// MARK:  -  ConnectionStatus  -
 
 /// The lifecycle state of the real-time price feed connection.
 ///

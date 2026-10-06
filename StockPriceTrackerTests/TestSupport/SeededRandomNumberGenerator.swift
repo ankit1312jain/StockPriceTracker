@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - SeededRandomNumberGenerator -
+// MARK:  -  SeededRandomNumberGenerator  -
 
 /// A tiny, deterministic xorshift generator used to make random-based code
 /// (e.g. ``RandomPriceGenerator``) fully reproducible in tests.

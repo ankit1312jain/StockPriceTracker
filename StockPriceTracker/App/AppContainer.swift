@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - AppContainer -
+// MARK:  -  AppContainer  -
 
 /// The single composition root where concrete dependencies are assembled and
 /// injected. Views and view models depend only on protocols, so swapping an

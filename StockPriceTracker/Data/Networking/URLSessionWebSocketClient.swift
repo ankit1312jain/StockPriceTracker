@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - URLSessionWebSocketClient -
+// MARK:  -  URLSessionWebSocketClient  -
 
 /// A thread-safe WebSocket client built on `URLSessionWebSocketTask`.
 ///
@@ -36,7 +36,7 @@ actor URLSessionWebSocketClient: WebSocketConnecting {
         )
     }
 
-    // MARK: - WebSocketConnecting -
+    // MARK:  -  WebSocketConnecting  -
 
     func connect() async {
         // `connecting` is client intent — the OS can't report it, so we emit it
@@ -70,7 +70,7 @@ actor URLSessionWebSocketClient: WebSocketConnecting {
         task = nil
     }
 
-    // MARK: - Delegate -
+    // MARK:  -  Delegate  -
 
     /// Bridges `URLSession` delegate callbacks (invoked on the session's
     /// delegate queue) into the actor's connection-state stream. Mirrors the
@@ -116,7 +116,7 @@ actor URLSessionWebSocketClient: WebSocketConnecting {
     }
 }
 
-// MARK: - WebSocketError -
+// MARK:  -  WebSocketError  -
 
 enum WebSocketError: Error, Equatable {
     case notConnected

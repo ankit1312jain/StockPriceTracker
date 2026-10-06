@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - SymbolRowView -
+// MARK:  -  SymbolRowView  -
 
 /// One row of the symbols list showing the symbol, company name, current price
 /// and the shared price-change badge.
@@ -31,8 +31,7 @@ struct SymbolRowView: View {
             VStack(alignment: .trailing, spacing: 2) {
                 Text(PriceFormatter.price(stock.price, currencyCode: stock.currencyCode))
                     .font(.body.weight(.semibold))
-                    .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .animatedNumericText()
                 PriceChangeBadge(stock: stock, style: .compact)
             }
         }
