@@ -30,10 +30,24 @@ jobs:
       - name: Run unit tests
         run: |
           set -o pipefail
+          # Pick an available iPhone simulator by UDID instead of pinning a
+          # device name, which changes with every Xcode / runner image update.
+          DEVICE_ID=$(xcrun simctl list devices available --json | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          ids = [d["udid"] for rt in sorted(data) for d in data[rt] if "iPhone" in d["name"]]
+          print(ids[-1] if ids else "")
+          ')
+          if [ -z "$DEVICE_ID" ]; then
+            echo "No iPhone simulator available on this runner:"
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Using simulator UDID: $DEVICE_ID"
           xcodebuild test \
             -project StockPriceTracker.xcodeproj \
             -scheme StockPriceTracker \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=$DEVICE_ID" \
             -resultBundlePath TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO
 
